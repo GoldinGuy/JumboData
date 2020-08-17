@@ -9,8 +9,11 @@ import googleapiclient.discovery
 __all__ = ["cur", "app", "mc", "youtube", "PLAYLIST_IDS"]
 
 DATABASE_URL = os.environ["DATABASE_URL"]
-YOUTUBE_API_KEY = os.environ["YOUTUBE_API_KEY"]
+# YOUTUBE_API_KEY = os.environ["YOUTUBE_API_KEY"]
+YOUTUBE_API_KEY = 'AIzaSyAIhhqu-7lJmmacYA2Q_gu8jrJJL7YVHWM'
 PLAYLIST_IDS = os.environ["PLAYLIST_IDS"].split(";")
+
+print(YOUTUBE_API_KEY)
 
 conn = psycopg2.connect(DATABASE_URL)
 cur = conn.cursor()
@@ -26,5 +29,6 @@ mc = bmemcached.Client(
 
 app = Flask(__name__)
 cors = CORS(app)
+
 
 # Init routes

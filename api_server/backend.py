@@ -1,10 +1,8 @@
-from . import cur, mc, youtube, PLAYLIST_IDS
-import requests
-import lxml.html
 import functools
 import itertools
 import json
 
+from . import mc, youtube, PLAYLIST_IDS
 
 # TODO: is it possible to remove these globals?
 latest_response = {}
@@ -14,7 +12,7 @@ latest_response = {}
 global_counter = 0
 
 
-def cb(c, request_id, response, exception):
+def cb(c, response):
     if latest_response.get(c) is None:
         latest_response[c] = []
     latest_response[c].append(response)
@@ -23,6 +21,7 @@ def cb(c, request_id, response, exception):
 def fetch_youtube_latest_uploads(page_token=None):
     youtube_page_cached = mc.get("LATEST_PAGE_" + str(page_token))
     if youtube_page_cached is not None:
+        print(json.loads(youtube_page_cached))
         return json.loads(youtube_page_cached)
 
     global global_counter
@@ -52,7 +51,7 @@ def fetch_youtube_latest_uploads(page_token=None):
     }
     mc.add("LATEST_PAGE_" + str(page_token), json.dumps(data), time=60 * 30)
     del latest_response[this_counter]
-
+    print('data' + data)
     return data
 
 #

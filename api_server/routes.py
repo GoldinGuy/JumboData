@@ -7,6 +7,7 @@ from . import app
 @app.route("/latest_videos")
 def videos():
     page_token = request.args.get("page_token")
+    print('page token ' + page_token)
     return json.dumps(backend.fetch_youtube_latest_uploads(page_token))
 
 
