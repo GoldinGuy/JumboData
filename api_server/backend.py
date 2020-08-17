@@ -33,18 +33,18 @@ def fetch_youtube_latest_uploads(page_token=None):
     this_counter = global_counter
     global_counter += 1
 
-    youtube = googleapiclient.discovery.build(
+    youtubeAPI = googleapiclient.discovery.build(
         "youtube", "v3", developerKey=YOUTUBE_API_KEY)
 
     playlists = []
     try:
-        request = youtube.channels().list(part="contentDetails", id=YOUTUBE_CHANNEL)
+        request = youtubeAPI.channels().list(part="contentDetails", id=YOUTUBE_CHANNEL)
         response = request.execute()
         uploads_id = response["items"][0]["contentDetails"]["relatedPlaylists"][
             "uploads"
         ]
     except:
-        request = youtube.channels().list(
+        request = youtubeAPI.channels().list(
             part="contentDetails", forUsername=YOUTUBE_CHANNEL
         )
         response = request.execute()
