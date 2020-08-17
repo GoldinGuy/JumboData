@@ -16,23 +16,7 @@ latest_response = {}
 global_counter = 0
 
 
-def cb(c, request_id, response, exception):
-    if latest_response.get(c) is None:
-        latest_response[c] = []
-    latest_response[c].append(response)
-
-
-
-def fetch_youtube_latest_uploads(page_token=None):
-    youtube_page_cached = mc.get("LATEST_PAGE_" + str(page_token))
-    if youtube_page_cached is not None:
-        return json.loads(youtube_page_cached)
-
-    global global_counter
-
-    this_counter = global_counter
-    global_counter += 1
-
+def getPlaylists():
     youtubeAPI = googleapiclient.discovery.build(
         "youtube", "v3", developerKey=YOUTUBE_API_KEY)
 
@@ -52,11 +36,28 @@ def fetch_youtube_latest_uploads(page_token=None):
             "uploads"
         ]
     playlists.append(uploads_id)
-
     # print("PLAYLIST_IDS=" + ";".join(playlists))
+    return playlists
+
+
+def cb(c, request_id, response, exception):
+    if latest_response.get(c) is None:
+        latest_response[c] = []
+    latest_response[c].append(response)
+
+
+def fetch_youtube_latest_uploads(page_token=None):
+    youtube_page_cached = mc.get("LATEST_PAGE_" + str(page_token))
+    if youtube_page_cached is not None:
+        return json.loads(youtube_page_cached)
+
+    global global_counter
+
+    this_counter = global_counter
+    global_counter += 1
 
     batch = youtube.new_batch_http_request()
-    for playlist in playlists:
+    for playlist in getPlaylists():
         batch.add(
             youtube.playlistItems().list(
                 part="snippet", playlistId=playlist, maxResults=30, pageToken=page_token

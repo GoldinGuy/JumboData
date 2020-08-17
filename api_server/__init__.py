@@ -11,7 +11,7 @@ DATABASE_URL = os.environ["DATABASE_URL"]
 YOUTUBE_API_KEY = os.environ["YOUTUBE_API_KEY"]
 YOUTUBE_CHANNEL = os.environ["YOUTUBE_CHANNEL_ID"]
 
-conn = psycopg2.connect(DATABASE_URL)  # , sslmode="require")
+conn = psycopg2.connect(DATABASE_URL)
 cur = conn.cursor()
 
 youtube = googleapiclient.discovery.build("youtube", "v3", developerKey=YOUTUBE_API_KEY)
