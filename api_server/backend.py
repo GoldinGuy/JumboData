@@ -95,7 +95,7 @@ def fetch_youtube_gameplay(page_token=None):
     batch = youtube.new_batch_http_request()
     batch.add(
         youtube.playlistItems().list(
-            part="snippet", playlistId='PL0VGXNIrhFXhZy_AAbsnKyZdRFJmabKzQ', maxResults=15, pageToken=page_token
+            part="snippet", playlistId='PL0VGXNIrhFXhZy_AAbsnKyZdRFJmabKzQ', maxResults=12, pageToken=page_token
         ),
         callback=functools.partial(cb, this_counter),
     )
@@ -113,7 +113,6 @@ def fetch_youtube_gameplay(page_token=None):
     }
     mc.add("GAMEPLAY_PAGE_" + str(page_token), json.dumps(data), time=60 * 30)
     del youtube_response[this_counter]
-
     return data
 
 def fetch_youtube_popular(page_token=None):
