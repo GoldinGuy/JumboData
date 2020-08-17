@@ -16,10 +16,11 @@ latest_response = {}
 global_counter = 0
 
 
-def cb(c, response):
+def cb(c, request_id, response, exception):
     if latest_response.get(c) is None:
         latest_response[c] = []
     latest_response[c].append(response)
+
 
 
 def fetch_youtube_latest_uploads(page_token=None):
