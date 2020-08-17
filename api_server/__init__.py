@@ -8,7 +8,7 @@ import googleapiclient.discovery
 __all__ = ["cur", "app", "mc", "youtube", "images_list", "YOUTUBE_CHANNELS"]
 
 DATABASE_URL = os.environ["DATABASE_URL"]
-YOUTUBE_API_KEY = os.environ["YOUTUBE_API_KEY"]
+YOUTUBE_API_KEY = 'AIzaSyATDwmntcICvvS_LSyTHYaYWQmPvx9R0tI'
 YOUTUBE_CHANNELS = os.environ["YOUTUBE_CHANNEL_IDS"].split(";")
 
 conn = psycopg2.connect(DATABASE_URL)  # , sslmode="require")
