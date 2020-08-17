@@ -25,7 +25,6 @@ def cb(c, response):
 def fetch_youtube_latest_uploads(page_token=None):
     youtube_page_cached = mc.get("LATEST_PAGE_" + str(page_token))
     if youtube_page_cached is not None:
-        print(json.loads(youtube_page_cached))
         return json.loads(youtube_page_cached)
 
     global global_counter
@@ -53,7 +52,7 @@ def fetch_youtube_latest_uploads(page_token=None):
         ]
     playlists.append(uploads_id)
 
-    print("PLAYLIST_IDS=" + ";".join(playlists))
+    # print("PLAYLIST_IDS=" + ";".join(playlists))
 
     batch = youtube.new_batch_http_request()
     for playlist in playlists:
@@ -77,7 +76,7 @@ def fetch_youtube_latest_uploads(page_token=None):
     }
     mc.add("LATEST_PAGE_" + str(page_token), json.dumps(data), time=60 * 30)
     del latest_response[this_counter]
-    print('data' + data)
+
     return data
 
 #
