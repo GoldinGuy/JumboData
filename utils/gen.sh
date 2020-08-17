@@ -1,3 +1,3 @@
 #!/usr/bin/bash
 
-mkdir tmp 2>/dev/null
+#mkdir tmp 2>/dev/null
