@@ -4,7 +4,7 @@ import googleapiclient.discovery
 import googleapiclient.errors
 
 
-API_KEY = 'AIzaSyAIhhqu-7lJmmacYA2Q_gu8jrJJL7YVHWM'
+API_KEY = 'AIzaSyATDwmntcICvvS_LSyTHYaYWQmPvx9R0tI'
 # API_KEY = os.environ["YOUTUBE_API_KEY"]
 
 

@@ -10,7 +10,7 @@ __all__ = ["cur", "app", "mc", "youtube", "PLAYLIST_IDS"]
 
 DATABASE_URL = os.environ["DATABASE_URL"]
 # YOUTUBE_API_KEY = os.environ["YOUTUBE_API_KEY"]
-YOUTUBE_API_KEY = 'AIzaSyAIhhqu-7lJmmacYA2Q_gu8jrJJL7YVHWM'
+YOUTUBE_API_KEY = 'AIzaSyATDwmntcICvvS_LSyTHYaYWQmPvx9R0tI'
 PLAYLIST_IDS = os.environ["PLAYLIST_IDS"].split(";")
 
 print(YOUTUBE_API_KEY)
