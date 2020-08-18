@@ -47,7 +47,7 @@ class Scraper:
             self.logger.info(
                 "Done scraping, sleeping for {} days".format(self.interval)
             )
-            time.sleep(self.interval * 86400)
+            time.sleep(self.interval * (60 * 60 * 24))
             # time.sleep(self.interval * 60)
 
     # def test_list(self):
