@@ -12,11 +12,11 @@ class TappedOutScraper:
         content = BeautifulSoup(response.content, "html.parser")
 
         print('determine number of pages')
-        numPages = 0
+        num_pages = 0
         for num in content.findAll('a', attrs={"class": "page-btn"}):
             if num.text.isdigit():
-                if int(num.text) > numPages:
-                    numPages = int(num.text)
+                if int(num.text) > num_pages:
+                    num_pages = int(num.text)
 
         print('get links to every deck')
 
@@ -29,7 +29,7 @@ class TappedOutScraper:
                 links.append(a['href'])
 
         x = 1
-        while x < numPages:
+        while x < num_pages:
             x += 1
             url = 'http://tappedout.net/users/JumboCommander/mtg-decks/' + '?&p=' + str(x) + '&page=' + str(x)
             response = requests.get(url, timeout=5)
