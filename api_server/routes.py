@@ -32,3 +32,13 @@ def deck_techs():
 def my_decks():
     page = int(request.args.get("page", 0))
     return json.dumps(backend.retrieve_decks(type="myDecks", page=page))
+
+@app.route("/misc")
+def misc():
+    page = int(request.args.get("page", 0))
+    return json.dumps(backend.retrieve_decks(type="misc", page=page))
+
+@app.route("/all_decks")
+def all_decks():
+    page = int(request.args.get("page", 0))
+    return json.dumps(backend.retrieve_decks(type="all", page=page))

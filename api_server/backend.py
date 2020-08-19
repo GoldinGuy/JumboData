@@ -160,8 +160,8 @@ def retrieve_decks(type, count=51, page=0):
 def fetch_requested_decks(type):
     output = []
     for deck in cur.fetchall():
-        print('type' + deck[0])
-        if deck[0] == type:
+        print('type: ' + deck[0])
+        if deck[0] == type or type == 'all':
             output.append(
                 {
                     "deckType": deck[0],
@@ -173,5 +173,6 @@ def fetch_requested_decks(type):
                     'scryfall': deck[6],
                 }
             )
+
     return output
 

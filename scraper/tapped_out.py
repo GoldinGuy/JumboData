@@ -43,6 +43,7 @@ def scrape_decks() -> List[Deck]:
 
     print('get data from every deck')
 
+    print(links)
     decks = []
 
     for link in links:
@@ -91,6 +92,9 @@ def scrape_decks() -> List[Deck]:
             if content.findAll(text='Commander / EDH') or (
                     'Commander / EDH' in content.find('a', {'class': 'btn btn-success btn-xs'}).text):
                 deck_type = 'deckTechs'
+            elif content.findAll(text='Commander / EDH*') or (
+                    'Commander / EDH*' in content.find('a', {'class': 'btn btn-success btn-xs'}).text):
+                deck_type = 'deckTechs'
             elif content.findAll(text='Casual') or (
                     'Casual' in content.find('a', {'class': 'btn btn-success btn-xs'}).text):
                 deck_type = 'myDecks'
@@ -110,4 +114,5 @@ def scrape_decks() -> List[Deck]:
         except Exception as e:
             print(e)
 
+    print(decks)
     return decks

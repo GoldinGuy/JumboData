@@ -81,12 +81,19 @@ class Scraper:
             self.insert_decks(decks)
 
     def insert_decks(self, decks: List[Deck]):
-        psycopg2.extras.execute_batch(
-            self.db_cur,
-            "insert into decks"
-            "(deckType, commander, commander_link, decklist, video, commander_img, scryfall) values"
-            "(%s, %s, %s, %s, %s, %s, %s) on conflict do nothing",
-            [i.as_tuple() for i in decks],
-        )
+
+        with self.db_conn:
+            with self.db_conn.cursor() as cur:
+                cur.execute(
+                    "DELETE from decks"
+                )
+                psycopg2.extras.execute_batch(
+                    self.db_cur,
+                    "insert into decks"
+                    "(deckType, commander, commander_link, decklist, video, commander_img, scryfall) values"
+                    "(%s, %s, %s, %s, %s, %s, %s) on conflict do nothing",
+                    [i.as_tuple() for i in decks],
+                )
+
         self.db_conn.commit()
 
