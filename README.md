@@ -1,6 +1,6 @@
 # Jumbo Database
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/256b0f53-8639-4bc7-b7b1-447b7dd96380/deploy-status)](https://app.netlify.com/sites/cocky-kilby-84e195/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/e06aba21-4039-43e3-9e3b-fb18c7d1e1c3/deploy-status)](https://app.netlify.com/sites/mystifying-goldberg-61d144/deploys)
 
 An API that scrapes data for YouTube content and returns it in json form. Designed to be used as a resource for websites struggling with API quotas. Collect URL links, names, images, and other relevant information from videos, and decks.
 
