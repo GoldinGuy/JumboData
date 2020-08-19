@@ -3,10 +3,10 @@ import psycopg2
 import psycopg2.extras
 import psycopg2.extensions
 import logging
-from typing import List, Dict
+from typing import List
 import os
-from .tappedOut import scrape_decks
-from .types import Deck
+from .tapped_out import scrape_decks
+from .deck_type import Deck
 
 
 class Scraper:
