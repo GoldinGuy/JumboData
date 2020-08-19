@@ -3,8 +3,10 @@ import psycopg2
 import psycopg2.extras
 import psycopg2.extensions
 import logging
+from typing import List, Dict
 import os
 from .tappedOut import scrape_decks
+from .types import Deck
 
 
 class Scraper:
@@ -78,12 +80,13 @@ class Scraper:
         if os.environ.get("JUMBO_WRITE_TO_DB") is not None:
             self.insert_decks(decks)
 
-    def insert_decks(self, decks):
+    def insert_decks(self, decks: List[Deck]):
         psycopg2.extras.execute_batch(
             self.db_cur,
             "insert into decks"
             "(deckType, commander, commander_link, decklist, video, commander_img, scryfall) values"
             "(%s, %s, %s, %s, %s, %s, %s) on conflict do nothing",
-            [i.as_dict() for i in decks],
+            [i.as_tuple() for i in decks],
         )
         self.db_conn.commit()
+
