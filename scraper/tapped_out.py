@@ -93,7 +93,8 @@ def scrape_decks() -> List[Deck]:
             if content.findAll(text='Commander / EDH') or (
                     'Commander / EDH' in content.find('a', {'class': 'btn btn-success btn-xs'}).text):
                 deck_type = 'deckTechs'
-            elif video != 'Unknown' and commander_link != 'Unknown':
+            elif content.findAll(text='Commander / EDH*') or (
+                    'Commander / EDH*' in content.find('a', {'class': 'btn btn-success btn-xs'}).text):
                 deck_type = 'deckTechs'
             elif content.findAll(text='Casual') or (
                     'Casual' in content.find('a', {'class': 'btn btn-success btn-xs'}).text):
