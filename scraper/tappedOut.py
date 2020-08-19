@@ -4,114 +4,117 @@ import requests
 import re
 
 
-class TappedOutScraper:
+def scrape_decks():
+    url = 'http://tappedout.net/users/JumboCommander/mtg-decks/'
+    response = requests.get(url, timeout=5)
+    content = BeautifulSoup(response.content, "html.parser")
 
-    def scrape_decks(self):
-        url = 'http://tappedout.net/users/JumboCommander/mtg-decks/'
+    print('determine number of pages')
+    num_pages = 0
+    for num in content.findAll('a', attrs={"class": "page-btn"}):
+        if num.text.isdigit():
+            if int(num.text) > num_pages:
+                num_pages = int(num.text)
+
+    print('get links to every deck')
+
+    links = []
+    y = 0
+    for a in content.find_all('a', href=True):
+        y += 1
+        if '/mtg-decks/' in (a['href']) and '/accounts/' not in (a['href']) and '/search/' not in (
+                a['href']) and y % 2 == 0:
+            links.append(a['href'])
+
+    x = 1
+    while x < num_pages:
+        x += 1
+        url = 'http://tappedout.net/users/JumboCommander/mtg-decks/' + '?&p=' + str(x) + '&page=' + str(x)
         response = requests.get(url, timeout=5)
         content = BeautifulSoup(response.content, "html.parser")
 
-        print('determine number of pages')
-        num_pages = 0
-        for num in content.findAll('a', attrs={"class": "page-btn"}):
-            if num.text.isdigit():
-                if int(num.text) > num_pages:
-                    num_pages = int(num.text)
-
-        print('get links to every deck')
-
-        links = []
-        y = 0
+        z = 0
         for a in content.find_all('a', href=True):
-            y += 1
+            z += 1
             if '/mtg-decks/' in (a['href']) and '/accounts/' not in (a['href']) and '/search/' not in (
-                    a['href']) and y % 2 == 0:
+                    a['href']) and z % 2 == 0:
                 links.append(a['href'])
 
-        x = 1
-        while x < num_pages:
-            x += 1
-            url = 'http://tappedout.net/users/JumboCommander/mtg-decks/' + '?&p=' + str(x) + '&page=' + str(x)
-            response = requests.get(url, timeout=5)
-            content = BeautifulSoup(response.content, "html.parser")
+    print('get data from every deck')
 
-            z = 0
-            for a in content.find_all('a', href=True):
-                z += 1
-                if '/mtg-decks/' in (a['href']) and '/accounts/' not in (a['href']) and '/search/' not in (
-                        a['href']) and z % 2 == 0:
-                    links.append(a['href'])
+    decks = []
 
-        print('get data from every deck')
+    for link in links:
+        url = 'http://tappedout.net' + link
+        response = requests.get(url, timeout=5)
+        content = BeautifulSoup(response.content, "html.parser")
 
-        decks = []
+        try:
+            commander_link = ''
+            for ul in content.findAll('ul', {'class': 'boardlist'}):
+                for a in ul.findAll('a'):
+                    for img in a.findAll('img', {'class': 'commander-img'}):
+                        commander_link = str(a.get('href'))
 
-        for link in links:
-            url = 'http://tappedout.net' + link
-            response = requests.get(url, timeout=5)
-            content = BeautifulSoup(response.content, "html.parser")
+            commander_url = 'http://tappedout.net' + commander_link
+            commander_data = requests.get(commander_url, timeout=5)
+            commander_content = BeautifulSoup(commander_data.content, "html.parser")
+            temp = commander_content.find('h1').text
+            commander = temp.replace('\n', '').strip()
+        except(ConnectionError, Exception) as e:
+            print("Exception is: ", e)
+            commander_link = 'Unknown'
+            commander = 'Unknown'
 
-            try:
-                commander_link = ''
-                for ul in content.findAll('ul', {'class': 'boardlist'}):
-                    for a in ul.findAll('a'):
-                        for img in a.findAll('img', {'class': 'commander-img'}):
-                            commander_link = str(a.get('href'))
+        try:
+            temp = content.find('iframe').get('src').partition('href='),
+            joined = ''.join(str(v) for v in temp)
+            joined_rep = joined.replace('https://www.youtube.com/embed/', 'https://www.youtube.com/watch?v=')
+            m = re.search("\('(.+?)',", str(joined_rep))
+            video = m.group(1)
+            print(video)
+        except(ConnectionError, Exception) as e:
+            print("Exception is: ", e)
+            video = 'Unknown'
 
-                commander_url = 'http://tappedout.net' + commander_link
-                commander_data = requests.get(commander_url, timeout=5)
-                commander_content = BeautifulSoup(commander_data.content, "html.parser")
-                temp = commander_content.find('h1').text
-                commander = temp.replace('\n', '').strip()
-            except(ConnectionError, Exception) as e:
-                print("Exception is: ", e)
-                commander_link = 'Unknown'
-                commander = 'Unknown'
+        try:
+            jsonofabitch = requests.get('https://api.scryfall.com/cards/named?fuzzy=' + commander).json()
+            commander_img = jsonofabitch.get('image_uris').get('art_crop')
+            scryfall = jsonofabitch.get('uri')
+        except(ConnectionError, Exception) as e:
+            print("Exception is: ", e)
+            commander_img = 'Unknown'
+            scryfall = 'Unknown'
 
-            try:
-                temp = content.find('iframe').get('src').partition('href='),
-                joined = ''.join(str(v) for v in temp)
-                joined_rep = joined.replace('https://www.youtube.com/embed/', 'https://www.youtube.com/watch?v=')
-                m = re.search("\('(.+?)',", str(joined_rep))
-                video = m.group(1)
-                print(video)
-            except(ConnectionError, Exception) as e:
-                print("Exception is: ", e)
-                video = 'Unknown'
+        try:
+            if content.findAll(text='Commander / EDH') or (
+                    'Commander / EDH' in content.find('a', {'class': 'btn btn-success btn-xs'}).text):
+                deck_type = 'deckTechs'
+            elif content.findAll(text='Casual') or (
+                    'Casual' in content.find('a', {'class': 'btn btn-success btn-xs'}).text):
+                deck_type = 'myDecks'
+            else:
+                deck_type = 'misc'
 
-            try:
-                jsonofabitch = requests.get('https://api.scryfall.com/cards/named?fuzzy=' + commander).json()
-                commander_img = jsonofabitch.get('image_uris').get('art_crop')
-                scryfall = jsonofabitch.get('uri')
-            except(ConnectionError, Exception) as e:
-                print("Exception is: ", e)
-                commander_img = 'Unknown'
-                scryfall = 'Unknown'
+            deckObj = {
+                "deckType": deck_type,
+                "commander": commander,
+                "commander_link": 'http://tappedout.net' + commander_link,
+                "decklist": 'http://tappedout.net' + link,
+                "video": video,
+                "commander_img": commander_img,
+                'scryfall': scryfall,
+            }
+            decks.append(deckObj)
+        except Exception as e:
+            print(e)
 
-            try:
-                if content.findAll(text='Commander / EDH') or (
-                        'Commander / EDH' in content.find('a', {'class': 'btn btn-success btn-xs'}).text):
-                    deck_type = 'deckTechs'
-                elif content.findAll(text='Casual') or (
-                        'Casual' in content.find('a', {'class': 'btn btn-success btn-xs'}).text):
-                    deck_type = 'myDecks'
-                else:
-                    deck_type = 'misc'
+        return decks
 
-                deckObj = {
-                    "deckType": deck_type,
-                    "commander": commander,
-                    "commander_link": 'http://tappedout.net' + commander_link,
-                    "decklist": 'http://tappedout.net' + link,
-                    "video": video,
-                    "commander_img": commander_img,
-                    'scryfall': scryfall,
-                }
-                decks.append(deckObj)
-            except Exception as e:
-                print(e)
-
-            return decks
+#
+# class TappedOutScraper:
+#
+#     pass
 
     # print(numPages)
     # print(links)

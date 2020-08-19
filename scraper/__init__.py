@@ -4,7 +4,7 @@ import psycopg2.extras
 import psycopg2.extensions
 import logging
 import os
-from .tappedOut import TappedOutScraper
+from .tappedOut import scrape_decks
 
 
 class Scraper:
@@ -38,7 +38,7 @@ class Scraper:
             print('scraping...')
             decks = []
             try:
-                decks.extend(TappedOutScraper.scrape_decks())
+                decks.extend(scrape_decks())
             except Exception as e:
                 print('scraping exception' + str(e))
                 self.logger.exception(
@@ -59,7 +59,7 @@ class Scraper:
 
         decks = []
         try:
-            decks.extend(TappedOutScraper.scrape_decks())
+            decks.extend(scrape_decks())
         except Exception as e:
             self.logger.exception(
                 'Scraper for site TappedOut raised an exception'
