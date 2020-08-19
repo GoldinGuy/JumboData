@@ -5,7 +5,6 @@ import re
 
 
 class TappedOutScraper():
-    SITE_NAME = "TappedOut"
 
     def scrape_decks(self):
         url = 'http://tappedout.net/users/JumboCommander/mtg-decks/'

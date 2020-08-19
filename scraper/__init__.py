@@ -32,9 +32,6 @@ class Scraper:
         self.logger.info(
             "Scraping interval set to {} days".format(self.interval))
 
-        # for scraper in ALL_SCRAPERS:
-        #     self.scrapers.append(scraper())
-
     def run(self):
         """
         Run the scraper - This will continuously update the database
@@ -42,45 +39,45 @@ class Scraper:
         while True:
             self.logger.info("Scraping...")
             decks = []
+            try:
+                decks.extend(TappedOutScraper.scrape_decks())
+            except Exception as e:
+                self.logger.exception(
+                    'Scraper for TappedOut raised an exception'
+                )
+
             self.insert_decks(decks)
 
             self.logger.info(
                 "Done scraping, sleeping for {} days".format(self.interval)
             )
             time.sleep(self.interval * (60 * 60 * 24))
-            # time.sleep(self.interval * 60)
 
-    # def test_list(self):
-    #     """
-    #     Display a list showing scraped articles
-    #     """
-    #
-    #     decks = []
-    #     try:
-    #         decks.extend(TappedOutScraper.scrape_decks())
-    #     except Exception as e:
-    #         self.logger.exception(
-    #             'Scraper for site "{}" raised an exception:'.format(
-    #                 TappedOutScraper.SITE_NAME
-    #             )
-    #         )
-    #
-    #     print("Collected {} decks:".format(len(decks)))
-    #     for deck in decks:
-    #         print("#", deck.title)
-    #         print("  url    =", deck.url)
-    #         print("  image  =", deck.image_url)
-    #         print("  author = {} ({})".format(
-    #             deck.author_name, deck.author_url))
-    #         if deck.description is not None:
-    #             print("  desc   =", deck.description.splitlines()[0])
-    #         print("  date   =", deck.date)
-    #         print("  site   = {} ({})".format(
-    #             deck.site_name, deck.site_url))
-    #         print()
-    #
-    #     if os.environ.get("JUMBO_WRITE_TO_DB") is not None:
-    #         self.insert_decks(decks)
+    def test_list(self):
+        """
+        Display a list showing scraped articles
+        """
+
+        decks = []
+        try:
+            decks.extend(TappedOutScraper.scrape_decks())
+        except Exception as e:
+            self.logger.exception(
+                'Scraper for site TappedOut raised an exception'
+            )
+
+        print("Collected {} decks:".format(len(decks)))
+        for deck in decks:
+            print("#", deck.deckType)
+            print("  commander    =", deck.commander)
+            print("  image  =", deck.commander_img)
+            print("  video  =", deck.video)
+            if deck.decklist is not None:
+                print("  decklist   =", deck.decklist)
+            print()
+
+        if os.environ.get("JUMBO_WRITE_TO_DB") is not None:
+            self.insert_decks(decks)
 
     def insert_decks(self, decks):
         psycopg2.extras.execute_batch(

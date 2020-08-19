@@ -151,25 +151,27 @@ def fetch_youtube_popular(page_token=None):
 def retrieve_decks(type, count=51, page=0):
     cur.execute(
         "SELECT deckType, commander, commander_link, decklist, video, commander_img, scryfall "
-        "FROM decks WHERE LOWER(deckType) = %s",
+        "FROM decks",
         (count, page * count),
     )
 
-    return fetch_requested_decks()
+    return fetch_requested_decks(type)
 
-def fetch_requested_decks():
+def fetch_requested_decks(type):
     output = []
     for deck in cur.fetchall():
-        output.append(
-            {
-                "deckType": deck[0],
-                "commander": deck[1],
-                "commander_link": deck[2],
-                "decklist": deck[3],
-                "video": deck[4],
-                "commander_img": deck[5],
-                'scryfall': deck[6],
-            }
-        )
+        print('type' + deck[0])
+        if deck[0] == type:
+            output.append(
+                {
+                    "deckType": deck[0],
+                    "commander": deck[1],
+                    "commander_link": deck[2],
+                    "decklist": deck[3],
+                    "video": deck[4],
+                    "commander_img": deck[5],
+                    'scryfall': deck[6],
+                }
+            )
     return output
 
