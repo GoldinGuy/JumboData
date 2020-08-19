@@ -1,9 +1,7 @@
 beautifulsoup4
 psycopg2-binary
 requests
-lxml
 flask
 flask-cors
 gunicorn
-dateparser
 google-api-python-client
