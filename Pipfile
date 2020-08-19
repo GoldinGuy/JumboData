@@ -9,6 +9,8 @@ verify_ssl = true
 psycopg2-binary = "==2.8.3"
 requests = "==2.22.0"
 lxml = "==4.4.1"
+beautifulsoup4 = "==4.9.1"
+bs4 = "==0.0.1"
 flask = "*"
 gunicorn = "*"
 flask-cors = "*"
