@@ -1,10 +1,11 @@
 from bs4 import BeautifulSoup
 import requests
-# import json
+from typing import List
+from .types import Deck
 import re
 
 
-def scrape_decks():
+def scrape_decks()  -> List[Deck]:
     url = 'http://tappedout.net/users/JumboCommander/mtg-decks/'
     response = requests.get(url, timeout=5)
     content = BeautifulSoup(response.content, "html.parser")
@@ -96,16 +97,25 @@ def scrape_decks():
             else:
                 deck_type = 'misc'
 
-            deckObj = {
-                "deckType": deck_type,
-                "commander": commander,
-                "commander_link": 'http://tappedout.net' + commander_link,
-                "decklist": 'http://tappedout.net' + link,
-                "video": video,
-                "commander_img": commander_img,
-                'scryfall': scryfall,
-            }
-            decks.append(deckObj)
+            deck_obj = Deck(
+                deck_type,
+                commander,
+                'http://tappedout.net' + commander_link,
+                'http://tappedout.net' + link,
+                video,
+                commander_img,
+                scryfall,
+            )
+            #     {
+            #     "deckType": deck_type,
+            #     "commander": commander,
+            #     "commander_link": 'http://tappedout.net' + commander_link,
+            #     "decklist": 'http://tappedout.net' + link,
+            #     "video": video,
+            #     "commander_img": commander_img,
+            #     'scryfall': scryfall,
+            # }
+            decks.append(deck_obj)
         except Exception as e:
             print(e)
 
