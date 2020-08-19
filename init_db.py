@@ -13,10 +13,10 @@ create table if not exists decks (
     deckType  text not null,
     commander  text not null,
     commander_link  text
-        constraint decks_pk
-            primary key,
     image_url   text,
     decklist    text not null,
+        constraint decks_pk
+                primary key,
     video text, 
     commander_img  text,
     scryfall text
