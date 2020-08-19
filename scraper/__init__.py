@@ -84,6 +84,6 @@ class Scraper:
             "insert into decks"
             "(deckType, commander, commander_link, decklist, video, commander_img, scryfall) values"
             "(%s, %s, %s, %s, %s, %s, %s) on conflict do nothing",
-            [i.as_tuple() for i in decks],
+            [i.as_dict() for i in decks],
         )
         self.db_conn.commit()
