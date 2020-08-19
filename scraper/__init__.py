@@ -23,7 +23,7 @@ class Scraper:
         self.db_conn = psycopg2.connect(database_url)
         self.db_cur = self.db_conn.cursor()
 
-        self.logger.debug("Connected to db")
+        self.logger.debug("Connected to database")
 
         interval = os.environ.get("SCRAPER_INTERVAL")
         if interval is not None:
