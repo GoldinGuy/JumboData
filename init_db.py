@@ -16,7 +16,6 @@ create table if not exists decks (
         constraint decks_pk
             primary key,
     image_url   text,
-    commander_link   text not null,
     decklist    text not null,
     video text, 
     commander_img  text,
