@@ -1,10 +1,10 @@
 from bs4 import BeautifulSoup
 import requests
-import json
+# import json
 import re
 
 
-class TappedOutScraper():
+class TappedOutScraper:
 
     def scrape_decks(self):
         url = 'http://tappedout.net/users/JumboCommander/mtg-decks/'

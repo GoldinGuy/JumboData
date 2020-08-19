@@ -1,10 +1,7 @@
 import time
-from typing import List, Dict
-from datetime import datetime
 import psycopg2
 import psycopg2.extras
 import psycopg2.extensions
-import dateparser
 import logging
 import os
 from .tappedOut import TappedOutScraper
@@ -38,10 +35,12 @@ class Scraper:
         """
         while True:
             self.logger.info("Scraping...")
+            print('scraping...')
             decks = []
             try:
                 decks.extend(TappedOutScraper.scrape_decks())
             except Exception as e:
+                print('scraping exception' + str(e))
                 self.logger.exception(
                     'Scraper for TappedOut raised an exception'
                 )

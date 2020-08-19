@@ -11,4 +11,5 @@ if __name__ == "__main__":
     else:
         logging.basicConfig(level=logging.ERROR)
 
+    print('starting scraper...')
     scraper.Scraper(DATABASE_URL).run()
