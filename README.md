@@ -20,12 +20,12 @@ Install dependencies with:
 
     pip3 install -r requirements.txt -U
 
-[Latest Videos Json (last 24 hours)](https://jumbo_data.herokuapp.com/articles)
+[Latest Videos Json (last 24 hours)](https://jumbo-data.herokuapp.com/articles)
 
-[Gameplay Json](https://jumbo_data.herokuapp.com/videos)
+[Gameplay Json](https://jumbo-data.herokuapp.com/videos)
 
-[Deck Techs Json](https://jumbo_data.herokuapp.com/deck_techs)
+[Deck Techs Json](https://jumbo-data.herokuapp.com/deck_techs)
 
-[Personal Decks Json](https://jumbo_data.herokuapp.com/my_decks)
+[Personal Decks Json](https://jumbo-data.herokuapp.com/my_decks)
 
 [Site Using Jumbo API ](https://jumbocommander.com/)
